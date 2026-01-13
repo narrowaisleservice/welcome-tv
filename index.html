@@ -13,45 +13,99 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #8B0000 0%, #B22222 100%);
+            background: linear-gradient(135deg, #8B0000 0%, #B22222 50%, #8B0000 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
             color: white;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             overflow: hidden;
+            position: relative;
+        }
+
+        /* Subtle background pattern */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
 
         .container {
             text-align: center;
             padding: 60px;
             max-width: 1400px;
+            position: relative;
+            z-index: 1;
         }
 
         .company-name {
             font-size: 3em;
             font-weight: 300;
             margin-bottom: 40px;
-            letter-spacing: 2px;
+            letter-spacing: 4px;
             opacity: 0.9;
+            text-transform: uppercase;
+            animation: breathe 4s ease-in-out infinite;
         }
 
         .welcome-text {
-            font-size: 5em;
+            font-size: 5.5em;
             font-weight: 700;
             margin-bottom: 60px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
+            background: linear-gradient(45deg, #ffffff, #ffeeee, #ffffff);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s ease-in-out infinite;
         }
 
         .visitors {
             margin-bottom: 40px;
+            position: relative;
+            min-height: 400px;
+        }
+
+        .visitor-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 40px 60px;
+            margin: 30px auto;
+            max-width: 800px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            opacity: 0;
+        }
+
+        .visitor-card.active {
+            animation: fadeInOut 8s ease-in-out;
         }
 
         .visitor-name {
             font-size: 3.5em;
             font-weight: 600;
-            margin: 30px 0;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
         .company-from {
@@ -60,30 +114,93 @@
             margin-top: 50px;
             opacity: 0.9;
             font-style: italic;
+            animation: breathe 4s ease-in-out infinite;
         }
 
-        .divider {
-            width: 200px;
-            height: 3px;
-            background: rgba(255,255,255,0.5);
-            margin: 40px auto;
+        .decorative-line {
+            width: 300px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+            margin: 50px auto;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        /* Animations */
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.9);
+            }
+            15% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            85% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.9);
+            }
+        }
+
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; width: 300px; }
+            50% { opacity: 1; width: 400px; }
+        }
+
+        @keyframes breathe {
+            0%, 100% { opacity: 0.9; }
+            50% { opacity: 1; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="company-name">FLEXI NARROW AISLE</div>
+        <div class="company-name">Flexi Narrow Aisle</div>
         
         <div class="welcome-text">WELCOME</div>
         
         <div class="visitors">
-            <div class="visitor-name">Michael Maher</div>
-            <div class="visitor-name">David Bird</div>
+            <div class="visitor-card" id="visitor1">
+                <div class="visitor-name">Michael Maher</div>
+            </div>
+            <div class="visitor-card" id="visitor2">
+                <div class="visitor-name">David Bird</div>
+            </div>
         </div>
         
-        <div class="divider"></div>
+        <div class="decorative-line"></div>
         
         <div class="company-from">from Bolzoni</div>
     </div>
+
+    <script>
+        // Cycle through visitors
+        let currentVisitor = 0;
+        const visitors = document.querySelectorAll('.visitor-card');
+        const cycleDuration = 8000; // 8 seconds per visitor
+
+        function showNextVisitor() {
+            // Remove active class from all
+            visitors.forEach(v => v.classList.remove('active'));
+            
+            // Add active class to current visitor
+            visitors[currentVisitor].classList.add('active');
+            
+            // Move to next visitor
+            currentVisitor = (currentVisitor + 1) % visitors.length;
+        }
+
+        // Start the cycle
+        showNextVisitor();
+        setInterval(showNextVisitor, cycleDuration);
+    </script>
 </body>
 </html>
