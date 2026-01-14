@@ -88,8 +88,9 @@
 
         .container {
             text-align: center;
-            padding: 40px;
-            max-width: 1600px;
+            padding: 40px 20px;
+            width: 100%;
+            max-width: 100%;
             position: relative;
             z-index: 1;
         }
@@ -198,17 +199,17 @@
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
-            width: 100%;
-            max-width: 1400px;
+            width: 95%;
+            max-width: 95%;
             opacity: 1;
-            padding: 40px;
+            padding: 40px 20px;
         }
 
         .visitor-name {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 8vw;
+            font-size: clamp(3rem, 12vw, 15rem);
             font-weight: 400;
-            letter-spacing: 0;
+            letter-spacing: 0.05em;
             text-transform: uppercase;
             margin-bottom: 15px;
             background: linear-gradient(135deg, #ffffff 0%, #8B0000 50%, #ffffff 100%);
@@ -220,6 +221,7 @@
             text-shadow: 0 0 40px rgba(139, 0, 0, 0.5);
             position: relative;
             white-space: nowrap;
+            overflow: visible;
         }
 
         .accent-line {
