@@ -88,9 +88,8 @@
 
         .container {
             text-align: center;
-            padding: 40px 20px;
-            width: 100%;
-            max-width: 100%;
+            padding: 40px;
+            max-width: 1600px;
             position: relative;
             z-index: 1;
         }
@@ -166,7 +165,7 @@
 
         .company-header {
             font-family: 'Oswald', sans-serif;
-            font-size: 2.2em;
+            font-size: 1.6em;
             font-weight: 300;
             letter-spacing: 10px;
             text-transform: uppercase;
@@ -199,17 +198,21 @@
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
-            width: 95%;
-            max-width: 95%;
-            opacity: 1;
-            padding: 40px 20px;
+            width: 100%;
+            max-width: 1400px;
+            opacity: 0;
+            padding: 40px;
+        }
+
+        .visitor-card.active {
+            animation: modernFadeInOut 8s ease-in-out;
         }
 
         .visitor-name {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(3rem, 12vw, 15rem);
+            font-size: 6em;
             font-weight: 400;
-            letter-spacing: 0.05em;
+            letter-spacing: 12px;
             text-transform: uppercase;
             margin-bottom: 15px;
             background: linear-gradient(135deg, #ffffff 0%, #8B0000 50%, #ffffff 100%);
@@ -220,8 +223,6 @@
             animation: redShimmer 4s ease-in-out infinite;
             text-shadow: 0 0 40px rgba(139, 0, 0, 0.5);
             position: relative;
-            white-space: nowrap;
-            overflow: visible;
         }
 
         .accent-line {
@@ -233,7 +234,50 @@
             animation: linePulse 2s ease-in-out infinite;
         }
 
+        .from-text {
+            font-family: 'Roboto Condensed', sans-serif;
+            font-size: 2em;
+            font-weight: 300;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            opacity: 0.5;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .company-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4.5em;
+            font-weight: 400;
+            letter-spacing: 10px;
+            text-transform: uppercase;
+            color: #8B0000;
+            text-shadow: 
+                0 0 30px rgba(139, 0, 0, 0.8),
+                0 0 60px rgba(139, 0, 0, 0.4);
+            animation: breathe 5s ease-in-out infinite;
+        }
+
         /* Animations */
+        @keyframes modernFadeInOut {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.95);
+            }
+            10% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            90% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.95);
+            }
+        }
+
         @keyframes redShimmer {
             0%, 100% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -286,16 +330,30 @@
     <div id="particles"></div>
 
     <div class="container">
-        <div class="company-header">Flexi</div>
+        <div class="company-header">Narrow Aisle Ltd</div>
         
         <div class="welcome-statement">
-            welcomes
+            is happy to welcome
         </div>
         
         <div class="visitors">
-            <div class="visitor-card">
-                <div class="visitor-name">Compact</div>
+            <div class="visitor-card" id="visitor1">
+                <div class="visitor-name">Rosie Breslin</div>
                 <div class="accent-line"></div>
+                <div class="from-text">From</div>
+                <div class="company-name">Triathlon</div>
+            </div>
+            <div class="visitor-card" id="visitor2">
+                <div class="visitor-name">Emma Carter</div>
+                <div class="accent-line"></div>
+                <div class="from-text">From</div>
+                <div class="company-name">Triathlon</div>
+            </div>
+            <div class="visitor-card" id="visitor3">
+                <div class="visitor-name">Richard Holt</div>
+                <div class="accent-line"></div>
+                <div class="from-text">From</div>
+                <div class="company-name">Triathlon</div>
             </div>
         </div>
     </div>
@@ -325,9 +383,22 @@
             document.getElementById('timestamp').textContent = `— ${year} —`;
         }
 
+        // Cycle through visitors
+        let currentVisitor = 0;
+        const visitors = document.querySelectorAll('.visitor-card');
+        const cycleDuration = 8000;
+
+        function showNextVisitor() {
+            visitors.forEach(v => v.classList.remove('active'));
+            visitors[currentVisitor].classList.add('active');
+            currentVisitor = (currentVisitor + 1) % visitors.length;
+        }
+
         // Initialize
         createParticles();
         updateTimestamp();
+        showNextVisitor();
+        setInterval(showNextVisitor, cycleDuration);
     </script>
 </body>
 </html>
